@@ -1,0 +1,338 @@
+
+Motor.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00803e00  00803e00  000001ee  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         0000019a  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  000001ee  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000220  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000038  00000000  00000000  0000025c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000261b  00000000  00000000  00000294  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00001a7c  00000000  00000000  000028af  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000417  00000000  00000000  0000432b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000054  00000000  00000000  00004744  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00001052  00000000  00000000  00004798  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000124  00000000  00000000  000057ea  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000028  00000000  00000000  0000590e  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	19 c0       	rjmp	.+50     	; 0x34 <__ctors_end>
+   2:	20 c0       	rjmp	.+64     	; 0x44 <__bad_interrupt>
+   4:	1f c0       	rjmp	.+62     	; 0x44 <__bad_interrupt>
+   6:	1e c0       	rjmp	.+60     	; 0x44 <__bad_interrupt>
+   8:	1d c0       	rjmp	.+58     	; 0x44 <__bad_interrupt>
+   a:	1c c0       	rjmp	.+56     	; 0x44 <__bad_interrupt>
+   c:	1b c0       	rjmp	.+54     	; 0x44 <__bad_interrupt>
+   e:	1a c0       	rjmp	.+52     	; 0x44 <__bad_interrupt>
+  10:	19 c0       	rjmp	.+50     	; 0x44 <__bad_interrupt>
+  12:	18 c0       	rjmp	.+48     	; 0x44 <__bad_interrupt>
+  14:	17 c0       	rjmp	.+46     	; 0x44 <__bad_interrupt>
+  16:	16 c0       	rjmp	.+44     	; 0x44 <__bad_interrupt>
+  18:	15 c0       	rjmp	.+42     	; 0x44 <__bad_interrupt>
+  1a:	14 c0       	rjmp	.+40     	; 0x44 <__bad_interrupt>
+  1c:	13 c0       	rjmp	.+38     	; 0x44 <__bad_interrupt>
+  1e:	12 c0       	rjmp	.+36     	; 0x44 <__bad_interrupt>
+  20:	11 c0       	rjmp	.+34     	; 0x44 <__bad_interrupt>
+  22:	10 c0       	rjmp	.+32     	; 0x44 <__bad_interrupt>
+  24:	0f c0       	rjmp	.+30     	; 0x44 <__bad_interrupt>
+  26:	0e c0       	rjmp	.+28     	; 0x44 <__bad_interrupt>
+  28:	0d c0       	rjmp	.+26     	; 0x44 <__bad_interrupt>
+  2a:	0c c0       	rjmp	.+24     	; 0x44 <__bad_interrupt>
+  2c:	0b c0       	rjmp	.+22     	; 0x44 <__bad_interrupt>
+  2e:	0a c0       	rjmp	.+20     	; 0x44 <__bad_interrupt>
+  30:	09 c0       	rjmp	.+18     	; 0x44 <__bad_interrupt>
+  32:	08 c0       	rjmp	.+16     	; 0x44 <__bad_interrupt>
+
+00000034 <__ctors_end>:
+  34:	11 24       	eor	r1, r1
+  36:	1f be       	out	0x3f, r1	; 63
+  38:	cf ef       	ldi	r28, 0xFF	; 255
+  3a:	cd bf       	out	0x3d, r28	; 61
+  3c:	df e3       	ldi	r29, 0x3F	; 63
+  3e:	de bf       	out	0x3e, r29	; 62
+  40:	64 d0       	rcall	.+200    	; 0x10a <main>
+  42:	a9 c0       	rjmp	.+338    	; 0x196 <_exit>
+
+00000044 <__bad_interrupt>:
+  44:	dd cf       	rjmp	.-70     	; 0x0 <__vectors>
+
+00000046 <timerAInit>:
+#include <stdlib.h>
+#include <stdio.h>
+
+void timerAInit(void)
+{
+	PORTMUX.CTRLC |= 0x0F;
+  46:	e0 e0       	ldi	r30, 0x00	; 0
+  48:	f2 e0       	ldi	r31, 0x02	; 2
+  4a:	82 81       	ldd	r24, Z+2	; 0x02
+  4c:	8f 60       	ori	r24, 0x0F	; 15
+  4e:	82 83       	std	Z+2, r24	; 0x02
+	
+	TCA0.SPLIT.LPER = 255;
+  50:	e0 e0       	ldi	r30, 0x00	; 0
+  52:	fa e0       	ldi	r31, 0x0A	; 10
+  54:	8f ef       	ldi	r24, 0xFF	; 255
+  56:	86 a3       	std	Z+38, r24	; 0x26
+	TCA0.SPLIT.HPER = 255;
+  58:	87 a3       	std	Z+39, r24	; 0x27
+
+	TCA0.SPLIT.CTRLD |= (TCA_SPLIT_SPLITM_bm);
+  5a:	83 81       	ldd	r24, Z+3	; 0x03
+  5c:	81 60       	ori	r24, 0x01	; 1
+  5e:	83 83       	std	Z+3, r24	; 0x03
+	TCA0.SPLIT.CTRLB |= 0x17;
+  60:	81 81       	ldd	r24, Z+1	; 0x01
+  62:	87 61       	ori	r24, 0x17	; 23
+  64:	81 83       	std	Z+1, r24	; 0x01
+
+	TCA0.SPLIT.CTRLA |= (TCA_SPLIT_CLKSEL_DIV8_gc) | (TCA_SPLIT_ENABLE_bm);
+  66:	80 81       	ld	r24, Z
+  68:	87 60       	ori	r24, 0x07	; 7
+  6a:	80 83       	st	Z, r24
+  6c:	08 95       	ret
+
+0000006e <clkInit>:
+}
+void clkInit(void){
+	CPU_CCP = 0xD8;
+  6e:	88 ed       	ldi	r24, 0xD8	; 216
+  70:	84 bf       	out	0x34, r24	; 52
+	CLKCTRL.MCLKCTRLB = 0x01;
+  72:	e0 e6       	ldi	r30, 0x60	; 96
+  74:	f0 e0       	ldi	r31, 0x00	; 0
+  76:	91 e0       	ldi	r25, 0x01	; 1
+  78:	91 83       	std	Z+1, r25	; 0x01
+	CPU_CCP = 0xD8;
+  7a:	84 bf       	out	0x34, r24	; 52
+	CLKCTRL.OSC20MCTRLA = 0x02;
+  7c:	82 e0       	ldi	r24, 0x02	; 2
+  7e:	80 8b       	std	Z+16, r24	; 0x10
+  80:	08 95       	ret
+
+00000082 <setMotor>:
+}
+void setMotor(int m, int speed){
+	if(m == 0){
+  82:	00 97       	sbiw	r24, 0x00	; 0
+  84:	01 f5       	brne	.+64     	; 0xc6 <setMotor+0x44>
+		if(speed == 0){
+  86:	61 15       	cp	r22, r1
+  88:	71 05       	cpc	r23, r1
+  8a:	29 f4       	brne	.+10     	; 0x96 <setMotor+0x14>
+			TCA0.SPLIT.LCMP0 = 0;
+  8c:	e0 e0       	ldi	r30, 0x00	; 0
+  8e:	fa e0       	ldi	r31, 0x0A	; 10
+  90:	10 a6       	std	Z+40, r1	; 0x28
+			TCA0.SPLIT.LCMP1 = 0;
+  92:	12 a6       	std	Z+42, r1	; 0x2a
+  94:	18 c0       	rjmp	.+48     	; 0xc6 <setMotor+0x44>
+		}
+		else if (speed == 300)
+  96:	6c 32       	cpi	r22, 0x2C	; 44
+  98:	21 e0       	ldi	r18, 0x01	; 1
+  9a:	72 07       	cpc	r23, r18
+  9c:	31 f4       	brne	.+12     	; 0xaa <setMotor+0x28>
+		{
+			TCA0.SPLIT.LCMP0 = 255;
+  9e:	e0 e0       	ldi	r30, 0x00	; 0
+  a0:	fa e0       	ldi	r31, 0x0A	; 10
+  a2:	2f ef       	ldi	r18, 0xFF	; 255
+  a4:	20 a7       	std	Z+40, r18	; 0x28
+			TCA0.SPLIT.LCMP1 = 255;
+  a6:	22 a7       	std	Z+42, r18	; 0x2a
+  a8:	0e c0       	rjmp	.+28     	; 0xc6 <setMotor+0x44>
+		}
+		else if(speed > 0){
+  aa:	16 16       	cp	r1, r22
+  ac:	17 06       	cpc	r1, r23
+  ae:	2c f4       	brge	.+10     	; 0xba <setMotor+0x38>
+			TCA0.SPLIT.LCMP0 = speed;
+  b0:	e0 e0       	ldi	r30, 0x00	; 0
+  b2:	fa e0       	ldi	r31, 0x0A	; 10
+  b4:	60 a7       	std	Z+40, r22	; 0x28
+			TCA0.SPLIT.LCMP1 = 0;
+  b6:	12 a6       	std	Z+42, r1	; 0x2a
+  b8:	06 c0       	rjmp	.+12     	; 0xc6 <setMotor+0x44>
+		}
+		else{
+			TCA0.SPLIT.LCMP0 = 0;
+  ba:	e0 e0       	ldi	r30, 0x00	; 0
+  bc:	fa e0       	ldi	r31, 0x0A	; 10
+  be:	10 a6       	std	Z+40, r1	; 0x28
+			TCA0.SPLIT.LCMP1 = 255-speed;
+  c0:	26 2f       	mov	r18, r22
+  c2:	20 95       	com	r18
+  c4:	22 a7       	std	Z+42, r18	; 0x2a
+		}
+	}
+	if(m == 1){
+  c6:	01 97       	sbiw	r24, 0x01	; 1
+  c8:	f9 f4       	brne	.+62     	; 0x108 <setMotor+0x86>
+		if(speed == 0){
+  ca:	61 15       	cp	r22, r1
+  cc:	71 05       	cpc	r23, r1
+  ce:	29 f4       	brne	.+10     	; 0xda <setMotor+0x58>
+			TCA0.SPLIT.LCMP2 = 0;
+  d0:	e0 e0       	ldi	r30, 0x00	; 0
+  d2:	fa e0       	ldi	r31, 0x0A	; 10
+  d4:	14 a6       	std	Z+44, r1	; 0x2c
+			TCA0.SPLIT.HCMP0 = 0;
+  d6:	11 a6       	std	Z+41, r1	; 0x29
+  d8:	08 95       	ret
+		}
+		else if (speed == 300)
+  da:	6c 32       	cpi	r22, 0x2C	; 44
+  dc:	81 e0       	ldi	r24, 0x01	; 1
+  de:	78 07       	cpc	r23, r24
+  e0:	31 f4       	brne	.+12     	; 0xee <setMotor+0x6c>
+		{
+			TCA0.SPLIT.LCMP2 = 255;
+  e2:	e0 e0       	ldi	r30, 0x00	; 0
+  e4:	fa e0       	ldi	r31, 0x0A	; 10
+  e6:	8f ef       	ldi	r24, 0xFF	; 255
+  e8:	84 a7       	std	Z+44, r24	; 0x2c
+			TCA0.SPLIT.HCMP0 = 255;
+  ea:	81 a7       	std	Z+41, r24	; 0x29
+  ec:	08 95       	ret
+		}
+		else if(speed > 0){
+  ee:	16 16       	cp	r1, r22
+  f0:	17 06       	cpc	r1, r23
+  f2:	2c f4       	brge	.+10     	; 0xfe <setMotor+0x7c>
+			TCA0.SPLIT.LCMP2 = speed;
+  f4:	e0 e0       	ldi	r30, 0x00	; 0
+  f6:	fa e0       	ldi	r31, 0x0A	; 10
+  f8:	64 a7       	std	Z+44, r22	; 0x2c
+			TCA0.SPLIT.HCMP0 = 0;
+  fa:	11 a6       	std	Z+41, r1	; 0x29
+  fc:	08 95       	ret
+		}
+		else{
+			TCA0.SPLIT.LCMP2 = 0;
+  fe:	e0 e0       	ldi	r30, 0x00	; 0
+ 100:	fa e0       	ldi	r31, 0x0A	; 10
+ 102:	14 a6       	std	Z+44, r1	; 0x2c
+			TCA0.SPLIT.HCMP0 = 255-speed;
+ 104:	60 95       	com	r22
+ 106:	61 a7       	std	Z+41, r22	; 0x29
+ 108:	08 95       	ret
+
+0000010a <main>:
+	}
+}
+
+int main(void)
+{
+	PORTB.DIR |= 0x38;
+ 10a:	e0 e2       	ldi	r30, 0x20	; 32
+ 10c:	f4 e0       	ldi	r31, 0x04	; 4
+ 10e:	80 81       	ld	r24, Z
+ 110:	88 63       	ori	r24, 0x38	; 56
+ 112:	80 83       	st	Z, r24
+	PORTC.DIR |= 0x08;
+ 114:	e0 e4       	ldi	r30, 0x40	; 64
+ 116:	f4 e0       	ldi	r31, 0x04	; 4
+ 118:	80 81       	ld	r24, Z
+ 11a:	88 60       	ori	r24, 0x08	; 8
+ 11c:	80 83       	st	Z, r24
+	
+	clkInit();
+ 11e:	a7 df       	rcall	.-178    	; 0x6e <clkInit>
+	timerAInit();
+ 120:	92 df       	rcall	.-220    	; 0x46 <timerAInit>
+	sei(); 
+ 122:	78 94       	sei
+    while (1) 
+    {
+		setMotor(1,255);
+ 124:	6f ef       	ldi	r22, 0xFF	; 255
+ 126:	70 e0       	ldi	r23, 0x00	; 0
+ 128:	81 e0       	ldi	r24, 0x01	; 1
+ 12a:	90 e0       	ldi	r25, 0x00	; 0
+ 12c:	aa df       	rcall	.-172    	; 0x82 <setMotor>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 12e:	2f e7       	ldi	r18, 0x7F	; 127
+ 130:	84 e8       	ldi	r24, 0x84	; 132
+ 132:	9e e1       	ldi	r25, 0x1E	; 30
+ 134:	21 50       	subi	r18, 0x01	; 1
+ 136:	80 40       	sbci	r24, 0x00	; 0
+ 138:	90 40       	sbci	r25, 0x00	; 0
+ 13a:	e1 f7       	brne	.-8      	; 0x134 <main+0x2a>
+ 13c:	00 c0       	rjmp	.+0      	; 0x13e <main+0x34>
+ 13e:	00 00       	nop
+		_delay_ms(500);
+		setMotor(1,300);
+ 140:	6c e2       	ldi	r22, 0x2C	; 44
+ 142:	71 e0       	ldi	r23, 0x01	; 1
+ 144:	81 e0       	ldi	r24, 0x01	; 1
+ 146:	90 e0       	ldi	r25, 0x00	; 0
+ 148:	9c df       	rcall	.-200    	; 0x82 <setMotor>
+ 14a:	2f e7       	ldi	r18, 0x7F	; 127
+ 14c:	8a e1       	ldi	r24, 0x1A	; 26
+ 14e:	96 e0       	ldi	r25, 0x06	; 6
+ 150:	21 50       	subi	r18, 0x01	; 1
+ 152:	80 40       	sbci	r24, 0x00	; 0
+ 154:	90 40       	sbci	r25, 0x00	; 0
+ 156:	e1 f7       	brne	.-8      	; 0x150 <main+0x46>
+ 158:	00 c0       	rjmp	.+0      	; 0x15a <main+0x50>
+ 15a:	00 00       	nop
+		_delay_ms(100);
+		setMotor(1,-255);
+ 15c:	61 e0       	ldi	r22, 0x01	; 1
+ 15e:	7f ef       	ldi	r23, 0xFF	; 255
+ 160:	81 e0       	ldi	r24, 0x01	; 1
+ 162:	90 e0       	ldi	r25, 0x00	; 0
+ 164:	8e df       	rcall	.-228    	; 0x82 <setMotor>
+ 166:	2f e7       	ldi	r18, 0x7F	; 127
+ 168:	84 e8       	ldi	r24, 0x84	; 132
+ 16a:	9e e1       	ldi	r25, 0x1E	; 30
+ 16c:	21 50       	subi	r18, 0x01	; 1
+ 16e:	80 40       	sbci	r24, 0x00	; 0
+ 170:	90 40       	sbci	r25, 0x00	; 0
+ 172:	e1 f7       	brne	.-8      	; 0x16c <main+0x62>
+ 174:	00 c0       	rjmp	.+0      	; 0x176 <main+0x6c>
+ 176:	00 00       	nop
+		_delay_ms(500);
+		setMotor(1,300);
+ 178:	6c e2       	ldi	r22, 0x2C	; 44
+ 17a:	71 e0       	ldi	r23, 0x01	; 1
+ 17c:	81 e0       	ldi	r24, 0x01	; 1
+ 17e:	90 e0       	ldi	r25, 0x00	; 0
+ 180:	80 df       	rcall	.-256    	; 0x82 <setMotor>
+ 182:	2f e7       	ldi	r18, 0x7F	; 127
+ 184:	8a e1       	ldi	r24, 0x1A	; 26
+ 186:	96 e0       	ldi	r25, 0x06	; 6
+ 188:	21 50       	subi	r18, 0x01	; 1
+ 18a:	80 40       	sbci	r24, 0x00	; 0
+ 18c:	90 40       	sbci	r25, 0x00	; 0
+ 18e:	e1 f7       	brne	.-8      	; 0x188 <main+0x7e>
+ 190:	00 c0       	rjmp	.+0      	; 0x192 <main+0x88>
+ 192:	00 00       	nop
+ 194:	c7 cf       	rjmp	.-114    	; 0x124 <main+0x1a>
+
+00000196 <_exit>:
+ 196:	f8 94       	cli
+
+00000198 <__stop_program>:
+ 198:	ff cf       	rjmp	.-2      	; 0x198 <__stop_program>
