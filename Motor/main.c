@@ -12,15 +12,9 @@
 volatile int m1Speed = 0;
 volatile int m2Speed = 0;
 
-volatile uint8_t transmit[] = {0,1,2,3,4,5};
-volatile uint8_t update = 0;
-volatile uint8_t transmitProgress = 0;
-volatile uint8_t transmitProgressMax = 5;
 volatile uint8_t pos = 0;
-volatile uint8_t poslast = 1;
 volatile char rec[BUFFER];
 volatile char tempRec[BUFFER];
-volatile uint8_t endframe = 0;
 volatile uint8_t done = 0;
 
 volatile uint8_t test;
@@ -30,10 +24,8 @@ volatile int counterUsed = 0;
 volatile uint32_t timeA1 =15278;
 volatile uint32_t timeA2 =15278;
 
-long map(long x, long in_min, long in_max, long out_min, long out_max)
-{
-	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
+uint8_t tmp;
+
 int Clamp( int value, int min, int max )
 {
 	return (value < min) ? min : (value > max) ? max : value;
@@ -60,17 +52,17 @@ void timerBInit(void)
 }
 void clkInit(void){
 	CPU_CCP = 0xD8;
-	CLKCTRL.MCLKCTRLB = 0x01;
+	CLKCTRL.MCLKCTRLB = 0x00;
 	CPU_CCP = 0xD8;
 	CLKCTRL.OSC20MCTRLA = 0x02;
 }
 void setMotor(int m, long speed){
 	if(m == 0){
 		if((~PORTA.IN & 0x20) && (speed > 10)){
-			speed = 300;
+			//speed = 300;
 		}
 		else if((~PORTA.IN & 0x10) && (speed < -10)){
-			speed = 300;
+			//speed = 300;
 		}
 		
 		if(speed <= 10 && speed >= -10){
@@ -94,10 +86,10 @@ void setMotor(int m, long speed){
 	if(m == 1){
 
 		if((~PORTA.IN & 0x40) && (speed > 10)){
-			speed = 300;
+			//speed = 300;
 		}
 		else if((~PORTA.IN & 0x80) && (speed < -10)){
-			speed = 300;
+			//speed = 300;
 		}
 		
 		if(speed <= 10 && speed >= -10){
@@ -130,12 +122,14 @@ ISR(USART0_RXC_vect){
 		uint8_t temp;
 		temp = USART0_RXDATAL;
 		if(temp == 0x0A || pos >= 19 || temp == 0x00){
+			PORTB.OUTTGL |= 0x40;
 			tempRec[pos] = 0x00;
 			pos = 0;
 			done ++;
 			for (int i = 0; i < BUFFER; i++)
 			{
 				rec[i] = tempRec[i];
+				tempRec[i]=0;
 			}
 		}
 		else
@@ -143,18 +137,18 @@ ISR(USART0_RXC_vect){
 			tempRec[pos] = temp;
 			pos ++;
 		}
-		USART0_STATUS |= USART_RXCIF_bm;
+		
 	}
-
+	//USART0_STATUS |= USART_RXCIF_bm;
 }
 int main(void)
 {
 	PORTA.DIR &= 0x00;
 	
-	PORTB.DIR |= 0x38;
+	PORTB.DIR |= 0x78; // 0x38
 	PORTC.DIR |= 0x08;
 	clkInit();
-	timerBInit();
+	//timerBInit();
 	timerAInit();
 	
 	USART_init();
@@ -163,23 +157,28 @@ int main(void)
 	sei();
 	while (1)
 	{
+		//_delay_ms(100);
+		//printString("start");
 		if (done >= 1)
 		{
+			
 			if (rec[0] == '!')
 			{
 				char *command = strtok(rec, "?");
-				if ((strcmp(command, "!X") == 0))
+				if ((strcmp(command, "!x") == 0))
 				{
 					char *command2 = strtok(0, "?");
-					int tmp = command2[0] << 8 | command2[1];
-					m1Speed = Clamp(map(tmp, 10052, 20504, -255, 255),-255,255);
+					sscanf(command2, "%2hhx", &tmp);
+					
+					m1Speed = Clamp(tmp,-255,255);
 					setMotor(0,m1Speed);
 				}
-				if ((strcmp(command, "!Y") == 0))
+				if ((strcmp(command, "!y") == 0))
 				{
 					char *command2 = strtok(0, "?");
-					int tmp = command2[0] << 8 | command2[1];
-					m2Speed = Clamp(map(tmp, 10052, 20504, -255, 255),-255,255);
+					sscanf(command2, "%2hhx", &tmp);
+					
+					m2Speed = Clamp(tmp,-255,255);
 					setMotor(1,m2Speed);
 				}
 			}

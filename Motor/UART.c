@@ -10,7 +10,7 @@ int8_t USART_init(){
 	
 	PORTMUX.CTRLB |= PORTMUX_USART0_bm;
 
-	USART0.BAUD = (uint16_t)USART0_BAUD_RATE(9600); /* set baud rate register */
+	USART0.BAUD = (uint16_t)USART0_BAUD_RATE(19200); /* set baud rate register */
 
 	USART0.CTRLA = USART_RXCIE_bm;
 	USART0.CTRLB = 0 << USART_MPCM_bp       /* Multi-processor Communication Mode: disabled */
@@ -22,8 +22,8 @@ int8_t USART_init(){
 
 	USART0.CTRLC = USART_CMODE_ASYNCHRONOUS_gc /* Asynchronous Mode */
 	| USART_CHSIZE_8BIT_gc /* Character size: 8 bit */
-	| USART_PMODE_EVEN_gc /* No Parity */
-	| USART_SBMODE_2BIT_gc; /* 1 stop bit */
+	| USART_PMODE_DISABLED_gc /* No Parity */
+	| USART_SBMODE_1BIT_gc; /* 1 stop bit */
 
 
 	return 0;
