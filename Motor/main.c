@@ -26,6 +26,11 @@ volatile uint32_t timeA2 =15278;
 
 uint8_t tmp;
 
+long map(long x, long in_min, long in_max, long out_min, long out_max)
+{
+	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 int Clamp( int value, int min, int max )
 {
 	return (value < min) ? min : (value > max) ? max : value;
@@ -58,11 +63,11 @@ void clkInit(void){
 }
 void setMotor(int m, long speed){
 	if(m == 0){
-		if((~PORTA.IN & 0x20) && (speed > 10)){
-			//speed = 300;
+		if((~PORTA.IN & 0x10) && (speed > 10)){
+			speed = 300;
 		}
-		else if((~PORTA.IN & 0x10) && (speed < -10)){
-			//speed = 300;
+		else if((~PORTA.IN & 0x20) && (speed < -10)){
+			speed = 300;
 		}
 		
 		if(speed <= 10 && speed >= -10){
@@ -86,10 +91,10 @@ void setMotor(int m, long speed){
 	if(m == 1){
 
 		if((~PORTA.IN & 0x40) && (speed > 10)){
-			//speed = 300;
+			speed = 300;
 		}
 		else if((~PORTA.IN & 0x80) && (speed < -10)){
-			//speed = 300;
+			speed = 300;
 		}
 		
 		if(speed <= 10 && speed >= -10){
@@ -161,7 +166,6 @@ int main(void)
 		//printString("start");
 		if (done >= 1)
 		{
-			
 			if (rec[0] == '!')
 			{
 				char *command = strtok(rec, "?");
@@ -169,18 +173,20 @@ int main(void)
 				{
 					char *command2 = strtok(0, "?");
 					sscanf(command2, "%2hhx", &tmp);
-					
-					m1Speed = Clamp(tmp,-255,255);
+					tmp = tmp-127;
+					m1Speed = Clamp(tmp,-127,127);
+					m1Speed = map(m1Speed, -127, 127, -255, 255);
 					setMotor(0,m1Speed);
 				}
-				if ((strcmp(command, "!y") == 0))
+				/*if ((strcmp(command, "!y") == 0))
 				{
 					char *command2 = strtok(0, "?");
 					sscanf(command2, "%2hhx", &tmp);
-					
-					m2Speed = Clamp(tmp,-255,255);
+					tmp = tmp-127;
+					m2Speed = Clamp(tmp,-127,127);
+					m2Speed = map(m2Speed, -127, 127, -255, 255);
 					setMotor(1,m2Speed);
-				}
+				}*/
 			}
 			done = 0;
 		}
