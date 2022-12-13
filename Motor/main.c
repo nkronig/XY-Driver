@@ -149,6 +149,9 @@ int main(void)
 	sei();
 	while (1)
 	{
+		setMotor(1,m2Speed);
+		setMotor(0,m1Speed);
+		
 		if (done >= 1)
 		{
 			if (rec[0] == '!')
@@ -159,14 +162,12 @@ int main(void)
 					char *command2 = strtok(0, "?");
 					sscanf(command2, "%2hhx", &tmp);
 					m1Speed = map(tmp, 0, 255, -255, 255);
-					setMotor(0,m1Speed);
 				}
 				else if ((strcmp(command, "!y") == 0))
 				{
 					char *command2 = strtok(0, "?");
 					sscanf(command2, "%2hhx", &tmp);
 					m2Speed = map(tmp, 0, 255, -255, 255);
-					setMotor(1,m2Speed);
 				}
 				else if ((strcmp(command, "!s") == 0))
 				{
@@ -176,6 +177,7 @@ int main(void)
 			}
 			done = 0;
 		}
+		
 	}
 }
 
