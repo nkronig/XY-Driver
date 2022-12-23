@@ -23,15 +23,36 @@ volatile int counterUsed = 0;
 char transmitString[20];
 uint8_t tmp;
 
+ISR(USART0_RXC_vect){
+	if (USART0_STATUS & USART_RXCIF_bm)
+	{
+		uint8_t temp;
+		temp = USART0_RXDATAL;
+		if(temp == 0x0A || pos >= 19 || temp == 0x00){
+			tempRec[pos] = 0x00;
+			pos = 0;
+			done ++;
+			for (int i = 0; i < BUFFER; i++)
+			{
+				rec[i] = tempRec[i];
+				tempRec[i]=0;
+			}
+		}
+		else
+		{
+			tempRec[pos] = temp;
+			pos ++;
+		}
+		
+	}
+	USART0_STATUS |= USART_RXCIF_bm;
+}
+
 long map(long x, long in_min, long in_max, long out_min, long out_max)
 {
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-int Clamp( int value, int min, int max )
-{
-	return (value < min) ? min : (value > max) ? max : value;
-}
 void timerAInit(void)
 {
 	PORTMUX.CTRLC |= 0x0F;
@@ -51,6 +72,7 @@ void clkInit(void){
 	CPU_CCP = 0xD8;
 	CLKCTRL.OSC20MCTRLA = 0x02;
 }
+
 void setMotor(int m, long speed){
 	if(m == 0){
 		if((~PORTA.IN & 0x10) && (speed > 10)){
@@ -96,34 +118,10 @@ void setMotor(int m, long speed){
 		}
 	}
 }
-ISR(USART0_RXC_vect){
-	if (USART0_STATUS & USART_RXCIF_bm)
-	{
-		uint8_t temp;
-		temp = USART0_RXDATAL;
-		if(temp == 0x0A || pos >= 19 || temp == 0x00){
-			tempRec[pos] = 0x00;
-			pos = 0;
-			done ++;
-			for (int i = 0; i < BUFFER; i++)
-			{
-				rec[i] = tempRec[i];
-				tempRec[i]=0;
-			}
-		}
-		else
-		{
-			tempRec[pos] = temp;
-			pos ++;
-		}
-		
-	}
-	USART0_STATUS |= USART_RXCIF_bm;
-}
+
 int main(void)
 {
 	PORTA.DIR &= 0x00;
-	
 	PORTB.DIR |= 0x38;
 	PORTC.DIR |= 0x08;
 	
