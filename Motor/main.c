@@ -44,14 +44,7 @@ void timerAInit(void)
 
 	TCA0.SPLIT.CTRLA |= (TCA_SPLIT_CLKSEL_DIV8_gc) | (TCA_SPLIT_ENABLE_bm);
 }
-void timerBInit(void)
-{
-	TCB0.CCMP = 0xFFFF;
 
-	TCB0.INTCTRL = 1 << TCB_CAPT_bp;
-
-	TCB0.CTRLA = TCB_CLKSEL_CLKDIV1_gc | 1 << TCB_ENABLE_bp;
-}
 void clkInit(void){
 	CPU_CCP = 0xD8;
 	CLKCTRL.MCLKCTRLB = 0x00;
@@ -103,18 +96,12 @@ void setMotor(int m, long speed){
 		}
 	}
 }
-ISR(TCB0_INT_vect)
-{
-	
-	TCB0_INTFLAGS |= TCB_CAPT_bm;
-}
 ISR(USART0_RXC_vect){
 	if (USART0_STATUS & USART_RXCIF_bm)
 	{
 		uint8_t temp;
 		temp = USART0_RXDATAL;
 		if(temp == 0x0A || pos >= 19 || temp == 0x00){
-			PORTB.OUTTGL |= 0x40;
 			tempRec[pos] = 0x00;
 			pos = 0;
 			done ++;
@@ -139,12 +126,12 @@ int main(void)
 	
 	PORTB.DIR |= 0x38;
 	PORTC.DIR |= 0x08;
+	
 	clkInit();
-	//timerBInit();
+
 	timerAInit();
 	
 	USART_init();
-	printString("start");
 	
 	sei();
 	while (1)

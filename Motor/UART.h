@@ -13,8 +13,6 @@
 
 int8_t USART_init(void);
 void USART_write(const uint8_t data);
-uint8_t USART_read(void);
-void sendChar(char c);
 void printString(const char myString[]);
 
 

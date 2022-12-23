@@ -77,10 +77,6 @@ Discarded input sections
  .text          0x00000000        0x0 UART.o
  .data          0x00000000        0x0 UART.o
  .bss           0x00000000        0x0 UART.o
- .text.sendChar
-                0x00000000        0xe UART.o
- .text.USART_read
-                0x00000000        0xe UART.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3/short-calls\libgcc.a(_mulsi3.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3/short-calls\libgcc.a(_mulsi3.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avrxmega3/short-calls\libgcc.a(_mulsi3.o)
@@ -732,46 +728,46 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0xa0
+.debug_aranges  0x00000000       0x90
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x60 main.o
  .debug_aranges
-                0x00000060       0x40 UART.o
+                0x00000060       0x30 UART.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x3062
+.debug_info     0x00000000     0x3022
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x19c7 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATtiny_DFP/2.0.368/gcc/dev/attiny817/avrxmega3/short-calls/crtattiny817.o
  .debug_info    0x000019c7     0x1112 main.o
- .debug_info    0x00002ad9      0x589 UART.o
+ .debug_info    0x00002ad9      0x549 UART.o
 
-.debug_abbrev   0x00000000     0x1c84
+.debug_abbrev   0x00000000     0x1c75
  *(.debug_abbrev)
  .debug_abbrev  0x00000000     0x1864 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATtiny_DFP/2.0.368/gcc/dev/attiny817/avrxmega3/short-calls/crtattiny817.o
  .debug_abbrev  0x00001864      0x29e main.o
- .debug_abbrev  0x00001b02      0x182 UART.o
+ .debug_abbrev  0x00001b02      0x173 UART.o
 
-.debug_line     0x00000000      0x714
+.debug_line     0x00000000      0x6ce
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x136 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATtiny_DFP/2.0.368/gcc/dev/attiny817/avrxmega3/short-calls/crtattiny817.o
  .debug_line    0x00000136      0x40f main.o
- .debug_line    0x00000545      0x1cf UART.o
+ .debug_line    0x00000545      0x189 UART.o
 
-.debug_frame    0x00000000      0x21c
+.debug_frame    0x00000000      0x1fc
  *(.debug_frame)
  .debug_frame   0x00000000      0x1a8 main.o
- .debug_frame   0x000001a8       0x74 UART.o
+ .debug_frame   0x000001a8       0x54 UART.o
 
-.debug_str      0x00000000     0x141e
+.debug_str      0x00000000     0x140a
  *(.debug_str)
  .debug_str     0x00000000      0xab9 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/Atmel/ATtiny_DFP/2.0.368/gcc/dev/attiny817/avrxmega3/short-calls/crtattiny817.o
  .debug_str     0x00000ab9      0x690 main.o
                                 0x6f7 (size before relaxing)
- .debug_str     0x00001149      0x2d5 UART.o
-                                0x53b (size before relaxing)
+ .debug_str     0x00001149      0x2c1 UART.o
+                                0x527 (size before relaxing)
 
 .debug_loc      0x00000000      0x65a
  *(.debug_loc)
@@ -796,10 +792,10 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x80
+.debug_ranges   0x00000000       0x70
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x50 main.o
- .debug_ranges  0x00000050       0x30 UART.o
+ .debug_ranges  0x00000050       0x20 UART.o
 
 .debug_macro
  *(.debug_macro)

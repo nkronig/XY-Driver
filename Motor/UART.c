@@ -43,19 +43,3 @@ void printString(const char myString[]) {
 		i++;
 	}
 }
-
-void sendChar(char c)
-{
-
-	while( !(USART0.STATUS & USART_DREIF_bm) ); //Wait until DATA buffer is empty
-
-	USART0.TXDATAL = c;
-
-}
-
-uint8_t USART_read()
-{
-	while (!(USART0.STATUS & USART_RXCIF_bm))
-	;
-	return USART0.RXDATAL;
-}
